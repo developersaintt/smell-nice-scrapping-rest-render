@@ -5,18 +5,18 @@ const puppeteer = require("puppeteer");
 
 async function scrapURL(req, res) {
   try {
-    const { search, pathname } = new URL(req.url);
-
-    const urlParam = search.split("=")[1];
+    const urlParam = req.query?.url;
 
     if (!urlParam) {
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "url is required" }));
+      res.send(JSON.stringify({ error: "url is required" }));
+      return;
     }
 
     if (!urlParam.includes("fragrantica.com")) {
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "only accepts fragrantic urls" }));
+      res.send(JSON.stringify({ error: "only accepts fragrantic urls" }));
+      return;
     }
 
     let browser = null;
@@ -25,7 +25,7 @@ async function scrapURL(req, res) {
         // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
         headless: "new",
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        browserBinding: env.MY_BROWSER,
+        // browserBinding: env.MY_BROWSER,
       });
 
       const page = await browser.newPage();
@@ -119,28 +119,23 @@ async function scrapURL(req, res) {
 
       await browser.close();
 
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(
-        JSON.stringify({
-          notes,
-          seasons: {
-            ...seasons.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
-          },
-          description,
-          accordBoxData: {
-            ...accordBoxData.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
-          },
-        })
-      );
+      //   res.writeHead(200, { "Content-Type": "application/json" });
+      res.send({
+        notes,
+        seasons: {
+          ...seasons.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
+        },
+        description,
+        accordBoxData: {
+          ...accordBoxData.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
+        },
+      });
     } catch (error) {
       console.log(error);
       if (browser) await browser.close();
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(error));
+      //   res.writeHead(200, { "Content-Type": "application/json" });
+      res.send(JSON.stringify(error));
     }
-
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(data));
   } catch (error) {
     console.log(error);
   }
