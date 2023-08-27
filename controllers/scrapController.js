@@ -5,14 +5,17 @@
 const chromium = require("chrome-aws-lambda");
 const puppeteer = require("puppeteer-core");
 
-let browserPromise = puppeteer.launch({
-  // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
-  headless: "new",
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  args: chromium.args,
-  executablePath: await chromium.executablePath,
-  headless: true,
-});
+// let browserPromise = puppeteer.launch({
+//   // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+//   //   headless: "new",
+//   headless: chromium.headless,
+//   args: ["--no-sandbox", "--disable-setuid-sandbox"],
+//   args: chromium.args,
+//   executablePath: await chromium.executablePath,
+//   headless: true,
+//   //   args: chromium.args,
+//   //   executablePath: await chromium.executablePath,
+// });
 
 // const browser = await puppeteer.launch({
 //   args: chromium.args,
@@ -39,7 +42,17 @@ async function scrapURL(req, res) {
 
     let browser = null;
     try {
-      browser = await browserPromise;
+      browser = await puppeteer.launch({
+        // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+        //   headless: "new",
+        headless: chromium.headless,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: chromium.args,
+        executablePath: await chromium.executablePath,
+        headless: true,
+        //   args: chromium.args,
+        //   executablePath: await chromium.executablePath,
+      });
 
       const page = await browser.newPage();
       await page.goto(
