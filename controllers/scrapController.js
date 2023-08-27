@@ -8,14 +8,14 @@ async function scrapURL(req, res) {
     const urlParam = req.query?.url;
 
     if (!urlParam) {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.send(JSON.stringify({ error: "url is required" }));
+      //   res.writeHead(200, { "Content-Type": "application/json" });
+      res.send({ error: "url is required" });
       return;
     }
 
     if (!urlParam.includes("fragrantica.com")) {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.send(JSON.stringify({ error: "only accepts fragrantic urls" }));
+      //   res.writeHead(200, { "Content-Type": "application/json" });
+      res.send({ error: "only accepts fragrantic urls" });
       return;
     }
 
