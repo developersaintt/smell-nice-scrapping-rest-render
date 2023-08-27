@@ -12,12 +12,12 @@ let browserPromise = puppeteer.launch({
   // browserBinding: env.MY_BROWSER,
 });
 
-const browser = await puppeteer.launch({
-  args: chromium.args,
-  executablePath:
-    process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath),
-  headless: true,
-});
+// const browser = await puppeteer.launch({
+//   args: chromium.args,
+//   executablePath:
+//     process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath),
+//   headless: true,
+// });
 
 async function scrapURL(req, res) {
   try {
