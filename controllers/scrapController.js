@@ -9,7 +9,9 @@ let browserPromise = puppeteer.launch({
   // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
   headless: "new",
   args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  // browserBinding: env.MY_BROWSER,
+  args: chromium.args,
+  executablePath: await chromium.executablePath,
+  headless: true,
 });
 
 // const browser = await puppeteer.launch({
