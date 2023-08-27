@@ -3,6 +3,13 @@
 
 const puppeteer = require("puppeteer");
 
+let browserPromise = puppeteer.launch({
+  // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+  headless: "new",
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  // browserBinding: env.MY_BROWSER,
+});
+
 async function scrapURL(req, res) {
   try {
     const urlParam = req.query?.url;
@@ -21,12 +28,7 @@ async function scrapURL(req, res) {
 
     let browser = null;
     try {
-      browser = await puppeteer.launch({
-        // args: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
-        headless: "new",
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        // browserBinding: env.MY_BROWSER,
-      });
+      browser = await browserPromise;
 
       const page = await browser.newPage();
       await page.goto(
