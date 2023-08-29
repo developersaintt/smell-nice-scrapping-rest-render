@@ -120,6 +120,16 @@ async function scrapURL(req, res) {
       await browser.close();
 
       //   res.writeHead(200, { "Content-Type": "application/json" });
+      console.log({
+        notes,
+        seasons: {
+          ...seasons.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
+        },
+        description,
+        accordBoxData: {
+          ...accordBoxData.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
+        },
+      });
       res.send({
         notes,
         seasons: {
